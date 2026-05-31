@@ -1,0 +1,52 @@
+<div class="admin-dashboard">
+  <h1>Admin Dashboard</h1>
+  <section>
+    <h2>Catches <a href="/admin/catches/new" class="btn-sm">+ New</a></h2>
+    <table>
+      <thead><tr><th>Photo</th><th>Species</th><th>Location</th><th>Date</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% catches.forEach(c => { %>
+          <tr>
+            <td><img src="/uploads/<%= c.photo_path %>" style="height:40px;border-radius:3px;" alt="<%= c.species %>"></td>
+            <td><%= c.species %></td>
+            <td><%= c.location_name %></td>
+            <td><%= new Date(c.caught_at).toLocaleDateString() %></td>
+            <td>
+              <a href="/admin/catches/<%= c.id %>/edit">Edit</a>
+              <form method="post" action="/admin/catches/<%= c.id %>/delete" style="display:inline"
+                    onsubmit="return confirm('Delete this catch?')">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        <% if (catches.length === 0) { %><tr><td colspan="5">No catches yet.</td></tr><% } %>
+      </tbody>
+    </table>
+  </section>
+  <section>
+    <h2>Events <a href="/admin/events/new" class="btn-sm">+ New</a></h2>
+    <table>
+      <thead><tr><th>Title</th><th>Date</th><th>Location</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% events.forEach(e => { %>
+          <tr>
+            <td><%= e.title %></td>
+            <td><%= new Date(e.event_at).toLocaleString() %></td>
+            <td><%= e.location_name || '—' %></td>
+            <td>
+              <a href="/admin/events/<%= e.id %>/rsvps">RSVPs</a>
+              <a href="/admin/events/<%= e.id %>/edit">Edit</a>
+              <form method="post" action="/admin/events/<%= e.id %>/delete" style="display:inline"
+                    onsubmit="return confirm('Delete this event?')">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        <% if (events.length === 0) { %><tr><td colspan="4">No events yet.</td></tr><% } %>
+      </tbody>
+    </table>
+  </section>
+  <p><a href="/admin/logout">Logout</a></p>
+</div>

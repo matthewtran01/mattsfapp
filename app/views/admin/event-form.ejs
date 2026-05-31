@@ -1,0 +1,32 @@
+<% var extraHead = '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>' %>
+<h1><%= event ? 'Edit Event' : 'New Event' %></h1>
+<form method="post" action="<%= action %>" class="admin-form">
+  <label>Title <input type="text" name="title" value="<%= event ? event.title : '' %>" required maxlength="200"></label>
+  <label>Date & Time <input type="datetime-local" name="event_at" value="<%= event ? event.event_at.slice(0,16) : '' %>" required></label>
+  <label>Location Name <input type="text" name="location_name" value="<%= event ? event.location_name || '' : '' %>" maxlength="200"></label>
+  <label>Description <textarea name="description" maxlength="2000"><%= event ? event.description || '' : '' %></textarea></label>
+  <p>Click the map to set the event location (optional):</p>
+  <div id="map" style="height:300px;margin-bottom:1rem;border-radius:6px;"></div>
+  <input type="hidden" name="lat" id="lat" value="<%= event && event.lat ? event.lat : '' %>">
+  <input type="hidden" name="lng" id="lng" value="<%= event && event.lng ? event.lng : '' %>">
+  <button type="submit"><%= event ? 'Update Event' : 'Create Event' %></button>
+  <a href="/admin">Cancel</a>
+</form>
+<script>
+  const initLat = parseFloat(document.getElementById('lat').value) || 42.36;
+  const initLng = parseFloat(document.getElementById('lng').value) || -71.06;
+  const map = L.map('map').setView([initLat, initLng], 8);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '\u00a9 OpenStreetMap contributors'
+  }).addTo(map);
+  let marker;
+  <% if (event && event.lat && event.lng) { %>
+    marker = L.marker([<%= event.lat %>, <%= event.lng %>]).addTo(map);
+  <% } %>
+  map.on('click', e => {
+    if (marker) map.removeLayer(marker);
+    marker = L.marker(e.latlng).addTo(map);
+    document.getElementById('lat').value = e.latlng.lat.toFixed(6);
+    document.getElementById('lng').value = e.latlng.lng.toFixed(6);
+  });
+</script>

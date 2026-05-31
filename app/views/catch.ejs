@@ -1,0 +1,22 @@
+<% var extraHead = '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>' %>
+<article class="catch-detail">
+  <img src="/uploads/<%= catchRow.photo_path %>" alt="<%= catchRow.species %>">
+  <h1><%= catchRow.species %></h1>
+  <p class="location">📍 <%= catchRow.location_name %></p>
+  <p class="date">🗓 <%= new Date(catchRow.caught_at).toLocaleDateString() %></p>
+  <% if (catchRow.weight_oz) { %><p>⚖️ <%= (catchRow.weight_oz / 16).toFixed(1) %> lbs (<%= catchRow.weight_oz %> oz)</p><% } %>
+  <% if (catchRow.length_in) { %><p>📏 <%= catchRow.length_in %>"</p><% } %>
+  <% if (catchRow.notes) { %><p class="notes"><%= catchRow.notes %></p><% } %>
+  <% if (catchRow.lat && catchRow.lng) { %>
+    <div id="map" style="height:300px;margin-top:1rem;border-radius:6px;"></div>
+    <script>
+      const map = L.map('map').setView([<%= catchRow.lat %>, <%= catchRow.lng %>], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+      L.marker([<%= catchRow.lat %>, <%= catchRow.lng %>]).addTo(map)
+        .bindPopup(<%- JSON.stringify(catchRow.species + ' \u2014 ' + (catchRow.location_name || '')) %>).openPopup();
+    </script>
+  <% } %>
+</article>
+<a href="/gallery">← Back to Gallery</a>

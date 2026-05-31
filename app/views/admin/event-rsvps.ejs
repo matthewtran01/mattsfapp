@@ -1,0 +1,13 @@
+<h1>RSVPs for: <%= event.title %></h1>
+<p>🗓 <%= new Date(event.event_at).toLocaleString() %></p>
+<p><strong><%= rsvps.length %></strong> people going</p>
+<% if (rsvps.length > 0) { %>
+  <ul>
+    <% rsvps.forEach(r => { %>
+      <li><%= r.name %> <span class="date">(signed up <%= new Date(r.created_at).toLocaleDateString() %>)</span></li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No RSVPs yet.</p>
+<% } %>
+<a href="/admin">← Back to Dashboard</a>
