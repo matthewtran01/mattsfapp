@@ -1,0 +1,17 @@
+.admin-dashboard table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+.admin-dashboard th, .admin-dashboard td { padding: 0.5rem 0.75rem; border: 1px solid #ddd; text-align: left; vertical-align: middle; }
+.admin-dashboard th { background: #f0ebe0; }
+.admin-dashboard tr:hover td { background: #faf6ef; }
+.admin-form { display: flex; flex-direction: column; gap: 0.75rem; max-width: 600px; }
+.admin-form label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.95rem; }
+.admin-form input[type=text],
+.admin-form input[type=date],
+.admin-form input[type=datetime-local],
+.admin-form input[type=number],
+.admin-form input[type=file],
+.admin-form textarea,
+.admin-form select { padding: 0.4rem 0.6rem; border: 1px solid #c8a96e; border-radius: 4px; font-family: inherit; font-size: 0.95rem; }
+.admin-form textarea { min-height: 80px; resize: vertical; }
+.admin-login-form { display: flex; flex-direction: column; gap: 0.75rem; max-width: 320px; margin: 4rem auto; }
+.admin-login-form label { display: flex; flex-direction: column; gap: 0.25rem; }
+.admin-login-form input[type=password] { padding: 0.4rem 0.6rem; border: 1px solid #c8a96e; border-radius: 4px; font-family: inherit; font-size: 0.95rem; }

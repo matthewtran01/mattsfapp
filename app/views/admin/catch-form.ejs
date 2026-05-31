@@ -1,0 +1,36 @@
+<% var extraHead = '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>' %>
+<h1><%= catchRow ? 'Edit Catch' : 'New Catch' %></h1>
+<form method="post" action="<%= action %>" enctype="multipart/form-data" class="admin-form">
+  <label>Photo <input type="file" name="photo" <%= catchRow ? '' : 'required' %> accept="image/*"></label>
+  <% if (catchRow) { %><p>Current: <img src="/uploads/<%= catchRow.photo_path %>" style="height:60px;" alt="current photo"></p><% } %>
+  <label>Species <input type="text" name="species" value="<%= catchRow ? catchRow.species : '' %>" required maxlength="100"></label>
+  <label>Location Name <input type="text" name="location_name" value="<%= catchRow ? catchRow.location_name : '' %>" required maxlength="200"></label>
+  <label>Date Caught <input type="date" name="caught_at" value="<%= catchRow ? catchRow.caught_at.slice(0,10) : '' %>" required></label>
+  <label>Weight (oz) <input type="number" name="weight_oz" min="0" value="<%= catchRow && catchRow.weight_oz ? catchRow.weight_oz : '' %>"></label>
+  <label>Length (in) <input type="number" name="length_in" min="0" value="<%= catchRow && catchRow.length_in ? catchRow.length_in : '' %>"></label>
+  <label>Notes <textarea name="notes" maxlength="2000"><%= catchRow ? catchRow.notes || '' : '' %></textarea></label>
+  <p>Click the map to set the catch location:</p>
+  <div id="map" style="height:300px;margin-bottom:1rem;border-radius:6px;"></div>
+  <input type="hidden" name="lat" id="lat" value="<%= catchRow && catchRow.lat ? catchRow.lat : '' %>">
+  <input type="hidden" name="lng" id="lng" value="<%= catchRow && catchRow.lng ? catchRow.lng : '' %>">
+  <button type="submit"><%= catchRow ? 'Update Catch' : 'Add Catch' %></button>
+  <a href="/admin">Cancel</a>
+</form>
+<script>
+  const initLat = parseFloat(document.getElementById('lat').value) || 42.36;
+  const initLng = parseFloat(document.getElementById('lng').value) || -71.06;
+  const map = L.map('map').setView([initLat, initLng], 8);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '\u00a9 OpenStreetMap contributors'
+  }).addTo(map);
+  let marker;
+  <% if (catchRow && catchRow.lat && catchRow.lng) { %>
+    marker = L.marker([<%= catchRow.lat %>, <%= catchRow.lng %>]).addTo(map);
+  <% } %>
+  map.on('click', e => {
+    if (marker) map.removeLayer(marker);
+    marker = L.marker(e.latlng).addTo(map);
+    document.getElementById('lat').value = e.latlng.lat.toFixed(6);
+    document.getElementById('lng').value = e.latlng.lng.toFixed(6);
+  });
+</script>

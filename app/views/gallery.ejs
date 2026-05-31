@@ -1,0 +1,30 @@
+<h1>Gallery</h1>
+<form class="filter-form" method="get" action="/gallery">
+  <label>Species:
+    <select name="species">
+      <option value="">All</option>
+      <% allSpecies.forEach(s => { %>
+        <option value="<%= s %>" <%= filter.species === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+  </label>
+  <label>Location:
+    <select name="location">
+      <option value="">All</option>
+      <% allLocations.forEach(l => { %>
+        <option value="<%= l %>" <%= filter.location === l ? 'selected' : '' %>><%= l %></option>
+      <% }) %>
+    </select>
+  </label>
+  <button type="submit">Filter</button>
+  <a href="/gallery">Clear</a>
+</form>
+<section class="gallery-grid">
+  <% catches.forEach(c => { %>
+    <a href="/catches/<%= c.id %>" class="gallery-item">
+      <img src="/uploads/<%= c.photo_path %>" alt="<%= c.species %>" loading="lazy">
+      <span><%= c.species %></span>
+    </a>
+  <% }) %>
+  <% if (catches.length === 0) { %><p>No catches match that filter.</p><% } %>
+</section>

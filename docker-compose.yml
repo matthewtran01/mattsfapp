@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  fishing-app:
+    build: ./app
+    container_name: fishing-app
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - DB_PATH=/app/data/db.sqlite
+      - UPLOAD_DIR=/app/uploads
+      - NODE_ENV=production
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - /mnt/nas_storage/fishing-app/uploads:/app/uploads

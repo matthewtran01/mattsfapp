@@ -1,0 +1,6 @@
+<h1>Admin Login</h1>
+<% if (error) { %><p class="error"><%= error %></p><% } %>
+<form method="post" action="/admin/login" class="admin-login-form">
+  <label>Password <input type="password" name="password" autofocus required></label>
+  <button type="submit">Login</button>
+</form>

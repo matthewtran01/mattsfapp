@@ -1,0 +1,28 @@
+<h1>Recent Catches</h1>
+<% if (upcoming.length > 0) { %>
+  <section class="upcoming-teaser">
+    <h2>Upcoming Trips</h2>
+    <ul>
+      <% upcoming.forEach(e => { %>
+        <li><a href="/calendar"><%= e.title %></a> — <%= new Date(e.event_at).toLocaleDateString() %></li>
+      <% }) %>
+    </ul>
+  </section>
+<% } %>
+<section class="catch-feed">
+  <% if (catches.length === 0) { %>
+    <p>No catches yet. Check back soon!</p>
+  <% } %>
+  <% catches.forEach(c => { %>
+    <article class="catch-card">
+      <a href="/catches/<%= c.id %>">
+        <img src="/uploads/<%= c.photo_path %>" alt="<%= c.species %>" loading="lazy">
+        <div class="catch-card-info">
+          <h3><%= c.species %></h3>
+          <p class="location"><%= c.location_name %></p>
+          <p class="date"><%= new Date(c.caught_at).toLocaleDateString() %></p>
+        </div>
+      </a>
+    </article>
+  <% }) %>
+</section>
